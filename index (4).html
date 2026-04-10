@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAGAR FITNESS — Elite Performance Gym, Aurangabad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C76A;
+      --gold-dim: rgba(201,168,76,0.15);
+      --bg: #080808;
+      --bg2: #0f0f0f;
+      --bg3: #161616;
+      --fg: #F2EDE4;
+      --fg-muted: #8a8478;
+      --white: #ffffff;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--fg); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; cursor: none; }
+
+    .cursor { width: 10px; height: 10px; background: var(--gold); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.08s ease; }
+    .cursor-ring { width: 36px; height: 36px; border: 1px solid rgba(201,168,76,0.5); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: transform 0.18s ease, width 0.2s, height 0.2s; }
+    a, button { cursor: none; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.35; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 900; display: flex; align-items: center; justify-content: space-between; padding: 24px 60px; background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent); transition: background 0.4s, padding 0.3s; }
+    nav.scrolled { background: rgba(8,8,8,0.97); border-bottom: 1px solid rgba(201,168,76,0.1); padding: 16px 60px; }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--gold); text-decoration: none; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--fg-muted); font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta { background: var(--gold); color: var(--bg); border: none; padding: 10px 24px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+    .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--fg); }
+
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 60px 80px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(201,168,76,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 80% at 20% 60%, rgba(201,168,76,0.04) 0%, transparent 50%), linear-gradient(165deg, #0a0a0a 0%, #080808 100%); }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%); }
+    .hero-tag { display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(201,168,76,0.3); padding: 8px 18px; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; width: fit-content; animation: fadeUp 0.8s ease 0.2s both; }
+    .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+    .hero-h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 11vw, 160px); line-height: 0.9; letter-spacing: 2px; color: var(--white); animation: fadeUp 0.8s ease 0.4s both; }
+    .hero-h1 span { color: var(--gold); display: block; }
+    .hero-sub { max-width: 480px; font-size: 16px; line-height: 1.7; color: var(--fg-muted); margin-top: 28px; animation: fadeUp 0.8s ease 0.6s both; }
+    .hero-actions { display: flex; gap: 16px; align-items: center; margin-top: 40px; animation: fadeUp 0.8s ease 0.8s both; flex-wrap: wrap; }
+    .btn-primary { background: var(--gold); color: var(--bg); border: none; padding: 16px 36px; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; display: inline-block; transition: all 0.25s; position: relative; overflow: hidden; }
+    .btn-primary::before { content: ''; position: absolute; inset: 0; background: var(--gold-light); transform: translateX(-100%); transition: transform 0.3s ease; }
+    .btn-primary:hover::before { transform: translateX(0); }
+    .btn-primary span { position: relative; z-index: 1; }
+    .btn-secondary { border: 1px solid rgba(201,168,76,0.4); color: var(--gold); background: none; padding: 16px 36px; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; display: inline-block; transition: all 0.25s; }
+    .btn-secondary:hover { background: var(--gold-dim); border-color: var(--gold); }
+    .hero-stats { display: flex; gap: 60px; margin-top: 70px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.07); animation: fadeUp 0.8s ease 1s both; flex-wrap: wrap; }
+    .hero-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--gold); letter-spacing: 1px; line-height: 1; }
+    .hero-stat-label { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-muted); margin-top: 4px; }
+    .hero-scroll { position: absolute; right: 60px; bottom: 80px; display: flex; flex-direction: column; align-items: center; gap: 12px; animation: fadeUp 0.8s ease 1.2s both; }
+    .hero-scroll span { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--fg-muted); writing-mode: vertical-rl; }
+    .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollDown 2s ease infinite; }
+    @keyframes scrollDown { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 50.01%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+    .marquee-wrap { overflow: hidden; border-top: 1px solid rgba(201,168,76,0.15); border-bottom: 1px solid rgba(201,168,76,0.15); padding: 18px 0; background: var(--bg2); }
+    .marquee-track { display: flex; width: max-content; animation: marquee 20s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-item { display: flex; align-items: center; gap: 16px; padding: 0 32px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--fg-muted); white-space: nowrap; }
+    .marquee-item .dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    section { padding: 120px 60px; position: relative; }
+    .section-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .section-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    .section-h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 6vw, 88px); line-height: 0.95; color: var(--white); letter-spacing: 1px; }
+    .section-h2 em { color: var(--gold); font-style: normal; }
+
+    #features { background: var(--bg2); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 70px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); }
+    .feature-card { padding: 50px 40px; background: var(--bg2); position: relative; overflow: hidden; transition: background 0.3s; }
+    .feature-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+    .feature-card:hover { background: var(--bg3); }
+    .feature-card:hover::after { transform: scaleX(1); }
+    .feature-num { font-family: 'Bebas Neue', sans-serif; font-size: 72px; color: rgba(201,168,76,0.07); line-height: 1; position: absolute; top: 20px; right: 30px; }
+    .feature-icon { font-size: 32px; margin-bottom: 24px; display: block; }
+    .feature-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+    .feature-desc { font-size: 14px; line-height: 1.7; color: var(--fg-muted); }
+
+    #transforms { background: var(--bg); }
+    .transforms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+    .transform-card { background: var(--bg3); border: 1px solid rgba(255,255,255,0.06); padding: 36px; transition: border-color 0.3s, transform 0.3s; }
+    .transform-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
+    .transform-avatar { width: 56px; height: 56px; background: var(--gold-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; border: 1px solid rgba(201,168,76,0.2); }
+    .transform-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 17px; color: var(--white); }
+    .transform-result { color: var(--gold); font-size: 13px; font-weight: 500; letter-spacing: 0.5px; margin: 4px 0 16px; }
+    .transform-text { font-size: 14px; color: var(--fg-muted); line-height: 1.7; }
+    .transform-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.25); padding: 5px 12px; }
+    .transform-badge::before { content: '✓'; }
+
+    #pricing { background: var(--bg2); }
+    .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 70px; align-items: start; }
+    .plan-card { border: 1px solid rgba(255,255,255,0.08); background: var(--bg3); padding: 48px 40px; position: relative; transition: all 0.3s; }
+    .plan-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-6px); }
+    .plan-card.featured { border-color: var(--gold); background: var(--bg); box-shadow: 0 0 60px rgba(201,168,76,0.08); }
+    .plan-badge { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--bg); font-family: 'Syne', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 20px; white-space: nowrap; }
+    .plan-name { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 4px; color: var(--fg-muted); text-transform: uppercase; margin-bottom: 12px; }
+    .plan-price { font-family: 'Bebas Neue', sans-serif; font-size: 72px; color: var(--white); line-height: 1; letter-spacing: 1px; }
+    .plan-price sup { font-size: 28px; vertical-align: top; margin-top: 12px; display: inline-block; color: var(--gold); }
+    .plan-price span { font-size: 16px; color: var(--fg-muted); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+    .plan-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 28px 0; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .plan-features li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--fg-muted); }
+    .plan-features li::before { content: '—'; color: var(--gold); font-size: 12px; flex-shrink: 0; }
+    .plan-features li.active { color: var(--fg); }
+    .plan-cta { display: block; text-align: center; margin-top: 36px; padding: 16px; text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: all 0.25s; }
+    .plan-cta.outline { border: 1px solid rgba(201,168,76,0.4); color: var(--gold); }
+    .plan-cta.outline:hover { background: var(--gold-dim); border-color: var(--gold); }
+    .plan-cta.solid { background: var(--gold); color: var(--bg); }
+    .plan-cta.solid:hover { background: var(--gold-light); }
+
+    #payment { background: var(--bg); }
+    .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 70px; align-items: center; }
+    .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .pay-card { border: 1px solid rgba(255,255,255,0.08); background: var(--bg3); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px; transition: border-color 0.3s, transform 0.3s; }
+    .pay-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-3px); }
+    .pay-icon { font-size: 28px; }
+    .pay-name { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--white); font-size: 15px; }
+    .pay-desc { font-size: 12px; color: var(--fg-muted); line-height: 1.5; }
+    .payment-info h3 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--white); line-height: 1; margin-bottom: 20px; }
+    .payment-info p { font-size: 15px; color: var(--fg-muted); line-height: 1.7; margin-bottom: 16px; }
+    .upi-box { background: var(--bg3); border: 1px solid rgba(201,168,76,0.2); padding: 20px 24px; display: flex; align-items: center; gap: 16px; margin-top: 28px; flex-wrap: wrap; }
+    .upi-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--fg-muted); }
+    .upi-id { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--gold); font-size: 17px; }
+
+    #whatsapp-section { background: var(--bg2); border-top: 1px solid rgba(201,168,76,0.1); border-bottom: 1px solid rgba(201,168,76,0.1); }
+    .wa-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .wa-text h2 { font-family: 'Bebas Neue', sans-serif; font-size: 64px; line-height: 0.95; color: var(--white); margin-bottom: 20px; }
+    .wa-text h2 em { color: #25D366; font-style: normal; }
+    .wa-text p { font-size: 15px; color: var(--fg-muted); line-height: 1.7; margin-bottom: 32px; }
+    .wa-steps { display: flex; flex-direction: column; gap: 20px; }
+    .wa-step { display: flex; gap: 16px; align-items: flex-start; }
+    .wa-step-num { width: 36px; height: 36px; border: 1px solid rgba(201,168,76,0.3); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--gold); flex-shrink: 0; }
+    .wa-step-text strong { display: block; font-family: 'Syne', sans-serif; font-weight: 700; color: var(--white); font-size: 14px; margin-bottom: 4px; }
+    .wa-step-text span { font-size: 13px; color: var(--fg-muted); }
+    .wa-cta-panel { background: var(--bg3); border: 1px solid rgba(255,255,255,0.07); padding: 48px; display: flex; flex-direction: column; gap: 20px; }
+    .wa-cta-panel h3 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--white); letter-spacing: 1px; }
+    .wa-cta-panel p { font-size: 14px; color: var(--fg-muted); line-height: 1.6; }
+    .wa-btn { display: flex; align-items: center; justify-content: center; gap: 12px; background: #25D366; color: #000; padding: 18px 32px; text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.25s; }
+    .wa-btn:hover { background: #20BD5A; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(37,211,102,0.25); }
+    .wa-btn svg { width: 22px; height: 22px; fill: #000; }
+    .plan-buttons { display: flex; flex-direction: column; gap: 12px; }
+    .wa-plan-btn { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.08); background: var(--bg2); padding: 14px 20px; text-decoration: none; color: var(--fg); font-size: 13px; transition: all 0.25s; }
+    .wa-plan-btn:hover { border-color: rgba(37,211,102,0.4); background: rgba(37,211,102,0.05); color: #25D366; }
+    .wa-plan-btn span { font-family: 'Syne', sans-serif; font-weight: 700; }
+    .wa-plan-btn small { color: var(--fg-muted); font-size: 12px; }
+
+    #offer { background: var(--gold); padding: 80px 60px; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+    .offer-left h2 { font-family: 'Bebas Neue', sans-serif; font-size: 72px; color: var(--bg); line-height: 0.95; letter-spacing: 1px; }
+    .offer-left p { color: rgba(0,0,0,0.6); font-size: 16px; margin-top: 12px; }
+    .offer-right { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+    .offer-timer { display: flex; gap: 16px; }
+    .timer-unit { text-align: center; }
+    .timer-val { font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--bg); line-height: 1; }
+    .timer-lbl { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(0,0,0,0.5); }
+    .offer-cta { background: var(--bg); color: var(--gold); padding: 16px 36px; text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; transition: all 0.25s; display: inline-block; }
+    .offer-cta:hover { background: #111; color: var(--gold-light); }
+
+    #contact { background: var(--bg); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; margin-top: 70px; align-items: start; }
+    .contact-info { display: flex; flex-direction: column; gap: 32px; }
+    .contact-item { display: flex; gap: 20px; align-items: flex-start; }
+    .contact-item-icon { width: 44px; height: 44px; background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .contact-item-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--fg-muted); margin-bottom: 4px; }
+    .contact-item-value { font-family: 'Syne', sans-serif; font-weight: 600; color: var(--white); font-size: 15px; }
+    .contact-item-value a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    .contact-item-value a:hover { color: var(--gold); }
+    .form-wrap { background: var(--bg3); border: 1px solid rgba(255,255,255,0.07); padding: 48px; }
+    .form-wrap h3 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--white); margin-bottom: 32px; letter-spacing: 1px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .form-group label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--fg-muted); }
+    .form-group input, .form-group select { background: var(--bg2); border: 1px solid rgba(255,255,255,0.08); color: var(--fg); padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+    .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+    .form-group select option { background: var(--bg2); }
+    .form-submit { width: 100%; background: var(--gold); color: var(--bg); border: none; padding: 18px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase; margin-top: 8px; transition: background 0.2s, transform 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .form-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .form-note { font-size: 12px; color: var(--fg-muted); text-align: center; margin-top: 14px; }
+
+    #faq { background: var(--bg2); }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 60px; background: rgba(255,255,255,0.06); }
+    .faq-item { padding: 32px 36px; border-bottom: 1px solid rgba(255,255,255,0.06); background: var(--bg2); cursor: pointer; transition: background 0.2s; }
+    .faq-item:hover { background: var(--bg3); }
+    .faq-q { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--white); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .faq-q::after { content: '+'; color: var(--gold); font-size: 22px; flex-shrink: 0; transition: transform 0.3s; }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a { font-size: 14px; color: var(--fg-muted); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, margin 0.3s; }
+    .faq-item.open .faq-a { max-height: 200px; margin-top: 14px; }
+
+    footer { background: #050505; padding: 60px; border-top: 1px solid rgba(201,168,76,0.1); }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 40px; flex-wrap: wrap; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--gold); letter-spacing: 2px; }
+    .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+    .footer-links a { text-decoration: none; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { font-size: 12px; color: var(--fg-muted); }
+
+    .float-wa { position: fixed; bottom: 32px; right: 32px; z-index: 800; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(37,211,102,0.4); text-decoration: none; transition: all 0.3s; animation: waPop 0.6s ease 2s both; }
+    .float-wa:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(37,211,102,0.5); }
+    .float-wa svg { width: 28px; height: 28px; fill: white; }
+    .float-wa-tooltip { position: absolute; right: 72px; background: var(--bg3); border: 1px solid rgba(255,255,255,0.1); color: var(--fg); padding: 8px 14px; font-size: 12px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .float-wa:hover .float-wa-tooltip { opacity: 1; }
+    @keyframes waPop { from{opacity:0;transform:scale(0)} to{opacity:1;transform:scale(1)} }
+
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1024px) {
+      nav { padding: 20px 30px; }
+      nav.scrolled { padding: 14px 30px; }
+      #hero, section { padding: 80px 30px; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .transforms-grid, .plans-grid { grid-template-columns: 1fr; }
+      .payment-grid, .wa-inner, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 32px; }
+      #offer { flex-direction: column; }
+      .offer-right { align-items: flex-start; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .hero-scroll { display: none; }
+    }
+    @media (max-width: 600px) {
+      .hero-h1 { font-size: 58px; }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      .features-grid { grid-template-columns: 1fr; }
+      .payment-methods { grid-template-columns: 1fr; }
+    }
+
+    .mobile-nav { position: fixed; inset: 0; background: rgba(8,8,8,0.98); z-index: 850; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .mobile-nav.open { opacity: 1; pointer-events: all; }
+    .mobile-nav a { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; color: var(--fg); text-decoration: none; transition: color 0.2s; }
+    .mobile-nav a:hover { color: var(--gold); }
+    .mobile-nav-close { position: absolute; top: 24px; right: 30px; background: none; border: none; color: var(--fg); font-size: 32px; }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<a href="https://wa.me/918830412364?text=Hi%20Sagar%20Fitness%2C%20I%27m%20interested%20in%20joining!%20Please%20share%20details." target="_blank" class="float-wa" aria-label="Chat on WhatsApp">
+  <div class="float-wa-tooltip">Chat with us</div>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" id="navClose">✕</button>
+  <a href="#features" onclick="closeMobileNav()">Features</a>
+  <a href="#transforms" onclick="closeMobileNav()">Results</a>
+  <a href="#pricing" onclick="closeMobileNav()">Pricing</a>
+  <a href="#payment" onclick="closeMobileNav()">Payment</a>
+  <a href="#contact" onclick="closeMobileNav()">Join Now</a>
+</div>
+
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">SAGAR FITNESS</a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#transforms">Results</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#payment">Payment</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="https://wa.me/918830412364?text=Hi!%20I%27d%20like%20to%20claim%20my%20FREE%20trial%20at%20Sagar%20Fitness." target="_blank" class="nav-cta">Free Trial</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div style="position:relative;z-index:2;">
+    <div class="hero-tag">Aurangabad's Premium Fitness Destination</div>
+    <h1 class="hero-h1">FORGE<span>YOUR BEST</span>SELF.</h1>
+    <p class="hero-sub">Join 200+ members who've redefined their limits at Sagar Fitness. Expert coaching, personalised nutrition, and guaranteed results — or your money back.</p>
+    <div class="hero-actions">
+      <a href="https://wa.me/918830412364?text=Hi!%20I%27d%20like%20to%20claim%20my%20FREE%202-day%20trial%20at%20Sagar%20Fitness." target="_blank" class="btn-primary"><span>Claim Free Trial →</span></a>
+      <a href="#pricing" class="btn-secondary">View Plans</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">200+</div><div class="hero-stat-label">Active Members</div></div>
+      <div><div class="hero-stat-num">95%</div><div class="hero-stat-label">Success Rate</div></div>
+      <div><div class="hero-stat-num">12wk</div><div class="hero-stat-label">Transformation</div></div>
+      <div><div class="hero-stat-num">5★</div><div class="hero-stat-label">Member Rating</div></div>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="dot"></span>Expert Trainers</div>
+    <div class="marquee-item"><span class="dot"></span>Personalised Diet</div>
+    <div class="marquee-item"><span class="dot"></span>30-Day Guarantee</div>
+    <div class="marquee-item"><span class="dot"></span>200+ Members</div>
+    <div class="marquee-item"><span class="dot"></span>Body Composition</div>
+    <div class="marquee-item"><span class="dot"></span>WhatsApp Support</div>
+    <div class="marquee-item"><span class="dot"></span>Aurangabad's Best</div>
+    <div class="marquee-item"><span class="dot"></span>Results Guaranteed</div>
+    <div class="marquee-item"><span class="dot"></span>Expert Trainers</div>
+    <div class="marquee-item"><span class="dot"></span>Personalised Diet</div>
+    <div class="marquee-item"><span class="dot"></span>30-Day Guarantee</div>
+    <div class="marquee-item"><span class="dot"></span>200+ Members</div>
+    <div class="marquee-item"><span class="dot"></span>Body Composition</div>
+    <div class="marquee-item"><span class="dot"></span>WhatsApp Support</div>
+    <div class="marquee-item"><span class="dot"></span>Aurangabad's Best</div>
+    <div class="marquee-item"><span class="dot"></span>Results Guaranteed</div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="section-label">Why Us</div>
+  <h2 class="section-h2">EVERYTHING YOU<br><em>NEED TO WIN</em></h2>
+  <div class="features-grid reveal">
+    <div class="feature-card"><div class="feature-num">01</div><span class="feature-icon">💪</span><div class="feature-title">Expert Certified Trainers</div><p class="feature-desc">Coaches with 10+ years experience build programs around your body type, goals, and schedule. Zero generic routines.</p></div>
+    <div class="feature-card"><div class="feature-num">02</div><span class="feature-icon">🥗</span><div class="feature-title">Custom Nutrition Plans</div><p class="feature-desc">Personalised meal plans aligned with your training. Whether cutting, bulking, or maintaining — we cover every macro.</p></div>
+    <div class="feature-card"><div class="feature-num">03</div><span class="feature-icon">📊</span><div class="feature-title">Weekly Progress Tracking</div><p class="feature-desc">Body measurements, performance data, and visual updates every week. You'll always know exactly where you stand.</p></div>
+    <div class="feature-card"><div class="feature-num">04</div><span class="feature-icon">🎯</span><div class="feature-title">30-Day Money-Back Guarantee</div><p class="feature-desc">No results in 30 days? Full refund. Zero questions asked. We back our methods with complete accountability.</p></div>
+    <div class="feature-card"><div class="feature-num">05</div><span class="feature-icon">⚡</span><div class="feature-title">Premium Equipment</div><p class="feature-desc">State-of-the-art machines, free weights, and cardio zones. Everything maintained for peak performance.</p></div>
+    <div class="feature-card"><div class="feature-num">06</div><span class="feature-icon">💬</span><div class="feature-title">WhatsApp 24/7 Support</div><p class="feature-desc">Message us anytime — training doubts, diet questions, scheduling. Response within 1 hour, every day.</p></div>
+  </div>
+</section>
+
+<section id="transforms">
+  <div class="section-label">Social Proof</div>
+  <h2 class="section-h2">REAL MEMBERS,<br><em>REAL RESULTS</em></h2>
+  <div class="transforms-grid reveal">
+    <div class="transform-card"><div class="transform-avatar">👨</div><div class="transform-name">Rahul M.</div><div class="transform-result">Lost 15kg in 12 Weeks</div><p class="transform-text">"I'd tried three gyms before Sagar Fitness. Nothing worked. In 12 weeks here I completely transformed my physique. The diet plan alone changed everything."</p><div class="transform-badge">Verified Member</div></div>
+    <div class="transform-card"><div class="transform-avatar">👩</div><div class="transform-name">Priya S.</div><div class="transform-result">Built 8kg of Lean Muscle</div><p class="transform-text">"As a woman I was nervous about weight training. The trainers made it completely comfortable and the results speak for themselves. Incredible."</p><div class="transform-badge">Verified Member</div></div>
+    <div class="transform-card"><div class="transform-avatar">👨</div><div class="transform-name">Amit K.</div><div class="transform-result">Stamina Up 300%</div><p class="transform-text">"Couldn't run 5 minutes when I started. Now finishing 10km runs and playing cricket on weekends. The structured program just works. Period."</p><div class="transform-badge">Verified Member</div></div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="section-label">Membership</div>
+  <h2 class="section-h2">CHOOSE YOUR<br><em>PLAN</em></h2>
+  <div class="plans-grid reveal">
+    <div class="plan-card">
+      <div class="plan-name">Basic</div>
+      <div class="plan-price"><sup>₹</sup>1,999<span>/month</span></div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="active">Full gym access</li>
+        <li class="active">All equipment</li>
+        <li class="active">Flexible open timings</li>
+        <li>Personal training sessions</li>
+        <li>Custom diet plan</li>
+        <li>Body composition analysis</li>
+      </ul>
+      <a href="https://wa.me/918830412364?text=Hi!%20I%27m%20interested%20in%20the%20Basic%20Plan%20%E2%82%B91%2C999%2Fmonth.%20Please%20share%20payment%20details." target="_blank" class="plan-cta outline">Get Basic Plan</a>
+    </div>
+    <div class="plan-card featured">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price"><sup>₹</sup>2,999<span>/month</span></div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="active">Everything in Basic</li>
+        <li class="active">1 PT session per week</li>
+        <li class="active">Personalised diet plan</li>
+        <li class="active">Priority support</li>
+        <li class="active">Weekly progress check-in</li>
+        <li>24/7 access</li>
+      </ul>
+      <a href="https://wa.me/918830412364?text=Hi!%20I%27m%20interested%20in%20the%20Pro%20Plan%20%E2%82%B92%2C999%2Fmonth.%20Please%20share%20payment%20details." target="_blank" class="plan-cta solid">Get Pro Plan</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-name">Elite</div>
+      <div class="plan-price"><sup>₹</sup>4,999<span>/month</span></div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li class="active">Everything in Pro</li>
+        <li class="active">Unlimited PT sessions</li>
+        <li class="active">24/7 gym access</li>
+        <li class="active">Body composition analysis</li>
+        <li class="active">Priority booking</li>
+        <li class="active">VIP WhatsApp support</li>
+      </ul>
+      <a href="https://wa.me/918830412364?text=Hi!%20I%27m%20interested%20in%20the%20Elite%20Plan%20%E2%82%B94%2C999%2Fmonth.%20Please%20share%20payment%20details." target="_blank" class="plan-cta outline">Get Elite Plan</a>
+    </div>
+  </div>
+</section>
+
+<section id="payment">
+  <div class="section-label">Payments</div>
+  <h2 class="section-h2">MULTIPLE<br><em>WAYS TO PAY</em></h2>
+  <div class="payment-grid reveal">
+    <div class="payment-methods">
+      <div class="pay-card"><div class="pay-icon">📱</div><div class="pay-name">UPI</div><p class="pay-desc">GPay, PhonePe, Paytm, BHIM — instant transfer. Most popular method.</p></div>
+      <div class="pay-card"><div class="pay-icon">💳</div><div class="pay-name">Debit / Credit Card</div><p class="pay-desc">All major cards accepted. Secure and instant. No extra charges.</p></div>
+      <div class="pay-card"><div class="pay-icon">🏦</div><div class="pay-name">Net Banking</div><p class="pay-desc">All major Indian banks supported. Direct and hassle-free.</p></div>
+      <div class="pay-card"><div class="pay-icon">💵</div><div class="pay-name">Cash at Counter</div><p class="pay-desc">Walk in and pay at the gym. Receipt provided immediately.</p></div>
+    </div>
+    <div class="payment-info">
+      <h3>SECURE & INSTANT PAYMENTS</h3>
+      <p>Every payment is 100% secure. We accept all major UPI apps, cards, and net banking. After payment, you receive WhatsApp confirmation within 1 hour.</p>
+      <p>For UPI or card payments, reach out on WhatsApp and we'll send a secure payment link directly to you.</p>
+      <div class="upi-box">
+        <div>
+          <div class="upi-label">UPI ID</div>
+          <div class="upi-id">sagarfitness@upi</div>
+        </div>
+        <div style="margin-left:auto;">
+          <a href="https://wa.me/918830412364?text=Hi!%20I%20want%20to%20pay%20via%20UPI.%20Please%20send%20the%20payment%20link." target="_blank" class="btn-primary" style="padding:12px 20px;font-size:11px;"><span>Pay via WA →</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="whatsapp-section">
+  <div class="wa-inner">
+    <div class="wa-text">
+      <div class="section-label">WhatsApp Automation</div>
+      <h2>JOIN IN<br><em>3 TAPS</em><br>ON WHATSAPP</h2>
+      <p>No long forms. No waiting. Message us on WhatsApp and we handle everything — plan selection, payment, and your welcome kit — within 60 minutes.</p>
+      <div class="wa-steps">
+        <div class="wa-step"><div class="wa-step-num">1</div><div class="wa-step-text"><strong>Tap the button below</strong><span>Opens WhatsApp with a pre-filled message — zero typing needed</span></div></div>
+        <div class="wa-step"><div class="wa-step-num">2</div><div class="wa-step-text"><strong>We reply within 1 hour</strong><span>Team confirms your plan, shares payment details and gym schedule</span></div></div>
+        <div class="wa-step"><div class="wa-step-num">3</div><div class="wa-step-text"><strong>You start training</strong><span>First session confirmed, welcome kit sent. Your transformation begins.</span></div></div>
+      </div>
+    </div>
+    <div class="wa-cta-panel reveal">
+      <h3>Message Us Now</h3>
+      <p>Choose your plan and tap to open WhatsApp. Pre-filled message ready to send instantly.</p>
+      <div class="plan-buttons">
+        <a href="https://wa.me/918830412364?text=Hi%20Sagar%20Fitness!%20I%27d%20like%20the%20Basic%20Plan%20%E2%82%B91%2C999%2Fmonth.%20Please%20share%20details." target="_blank" class="wa-plan-btn"><span>Basic Plan</span><small>₹1,999/month →</small></a>
+        <a href="https://wa.me/918830412364?text=Hi%20Sagar%20Fitness!%20I%27d%20like%20the%20Pro%20Plan%20%E2%82%B92%2C999%2Fmonth.%20Please%20share%20details." target="_blank" class="wa-plan-btn"><span>Pro Plan ⭐</span><small>₹2,999/month →</small></a>
+        <a href="https://wa.me/918830412364?text=Hi%20Sagar%20Fitness!%20I%27d%20like%20the%20Elite%20Plan%20%E2%82%B94%2C999%2Fmonth.%20Please%20share%20details." target="_blank" class="wa-plan-btn"><span>Elite Plan 👑</span><small>₹4,999/month →</small></a>
+        <a href="https://wa.me/918830412364?text=Hi%20Sagar%20Fitness!%20I%27d%20like%20to%20book%20a%20FREE%202-day%20trial.%20Please%20share%20next%20steps!" target="_blank" class="wa-plan-btn"><span>Free 2-Day Trial 🎁</span><small>No payment needed →</small></a>
+      </div>
+      <a href="https://wa.me/918830412364?text=Hi%20Sagar%20Fitness!%20I%27d%20like%20to%20know%20more." target="_blank" class="wa-btn">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Open WhatsApp Now
+      </a>
+    </div>
+  </div>
+</section>
+
+<div id="offer">
+  <div class="offer-left">
+    <h2>30% OFF<br>ANNUAL PLAN</h2>
+    <p>Save ₹18,000 + Free personalised diet plan. Limited time only.</p>
+  </div>
+  <div class="offer-right">
+    <div class="offer-timer">
+      <div class="timer-unit"><div class="timer-val" id="t-hr">23</div><div class="timer-lbl">Hrs</div></div>
+      <div class="timer-unit"><div class="timer-val">:</div></div>
+      <div class="timer-unit"><div class="timer-val" id="t-min">59</div><div class="timer-lbl">Min</div></div>
+      <div class="timer-unit"><div class="timer-val">:</div></div>
+      <div class="timer-unit"><div class="timer-val" id="t-sec">59</div><div class="timer-lbl">Sec</div></div>
+    </div>
+    <a href="https://wa.me/918830412364?text=Hi!%20I%20want%20the%2030%25%20OFF%20Annual%20Membership%20offer.%20Please%20share%20details!" target="_blank" class="offer-cta">Claim Offer Now</a>
+  </div>
+</div>
+
+<section id="contact">
+  <div class="section-label">Get Started</div>
+  <h2 class="section-h2">CLAIM YOUR<br><em>FREE TRIAL</em></h2>
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <div class="contact-item"><div class="contact-item-icon">📍</div><div><div class="contact-item-label">Location</div><div class="contact-item-value">Aurangabad (Sambhaji Nagar), Maharashtra</div></div></div>
+      <div class="contact-item"><div class="contact-item-icon">📞</div><div><div class="contact-item-label">Phone</div><div class="contact-item-value"><a href="tel:+918830412364">+91 88304 12364</a></div></div></div>
+      <div class="contact-item"><div class="contact-item-icon">💬</div><div><div class="contact-item-label">WhatsApp</div><div class="contact-item-value"><a href="https://wa.me/918830412364" target="_blank">Message us on WhatsApp</a></div></div></div>
+      <div class="contact-item"><div class="contact-item-icon">⏰</div><div><div class="contact-item-label">Hours</div><div class="contact-item-value">Mon–Sat: 5:30 AM – 10:00 PM<br>Sun: 6:00 AM – 8:00 PM</div></div></div>
+      <div style="padding:28px;background:var(--bg3);border:1px solid rgba(201,168,76,0.15);">
+        <p style="font-size:13px;color:var(--fg-muted);line-height:1.7;">⚠️ Only <strong style="color:var(--gold)">20 trial slots</strong> available this month. Fill the form or WhatsApp us to secure yours.</p>
+      </div>
+    </div>
+    <div class="form-wrap reveal">
+      <h3>GET YOUR FREE TRIAL</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Full Name</label><input type="text" id="f-name" placeholder="Your name" /></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" id="f-phone" placeholder="+91 XXXXX XXXXX" /></div>
+      </div>
+      <div class="form-group"><label>Email (Optional)</label><input type="email" id="f-email" placeholder="your@email.com" /></div>
+      <div class="form-group">
+        <label>Interested Plan</label>
+        <select id="f-plan">
+          <option value="Free Trial">Free 2-Day Trial</option>
+          <option value="Basic Plan Rs 1999">Basic — ₹1,999/month</option>
+          <option value="Pro Plan Rs 2999">Pro — ₹2,999/month</option>
+          <option value="Elite Plan Rs 4999">Elite — ₹4,999/month</option>
+          <option value="Annual Plan 30% OFF">Annual (30% OFF)</option>
+        </select>
+      </div>
+      <button class="form-submit" onclick="submitForm()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Send via WhatsApp
+      </button>
+      <p class="form-note">🔒 We'll contact you within 1 hour on WhatsApp. No spam, ever.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="section-label">Questions</div>
+  <h2 class="section-h2">GOT<br><em>QUESTIONS?</em></h2>
+  <div class="faq-grid reveal">
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Is there really a free trial?</div><div class="faq-a">Yes — 2 full days of gym access plus a complimentary fitness assessment. No payment needed, no commitment. Just show up.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Do I need prior gym experience?</div><div class="faq-a">Not at all. We train everyone from complete beginners to advanced athletes. Your trainer meets you exactly where you are.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What if I don't see results?</div><div class="faq-a">Simple — we refund you completely within 30 days if you're not satisfied with your progress. No questions, no conditions.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do I pay for membership?</div><div class="faq-a">UPI (GPay, PhonePe, Paytm), debit/credit card, net banking, or cash at the gym. Message us on WhatsApp for a secure payment link.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Can I cancel anytime?</div><div class="faq-a">Monthly plans can be cancelled before the next billing cycle. Annual plans are covered by the 30-day money-back guarantee.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Is the diet plan included in all plans?</div><div class="faq-a">Personalised diet plan is included in Pro and Elite plans. Basic members can add it for a small additional fee.</div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">SAGAR FITNESS</div>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#payment">Payment</a>
+      <a href="#contact">Free Trial</a>
+      <a href="https://wa.me/918830412364" target="_blank">WhatsApp</a>
+    </div>
+    <div class="footer-copy">© 2026 Sagar Fitness Gym. Aurangabad, MH.</div>
+  </div>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
+    ring.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
+  });
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width='56px'; ring.style.height='56px'; ring.style.borderColor='rgba(201,168,76,0.8)'; });
+    el.addEventListener('mouseleave', () => { ring.style.width='36px'; ring.style.height='36px'; ring.style.borderColor='rgba(201,168,76,0.5)'; });
+  });
+
+  // NAV SCROLL
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // MOBILE NAV
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.add('open'));
+  document.getElementById('navClose').addEventListener('click', () => document.getElementById('mobileNav').classList.remove('open'));
+  function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
+
+  // REVEAL ON SCROLL
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // COUNTDOWN TIMER
+  let totalSecs = 23 * 3600 + 59 * 60 + 59;
+  setInterval(() => {
+    if (totalSecs <= 0) return;
+    totalSecs--;
+    document.getElementById('t-hr').textContent = String(Math.floor(totalSecs/3600)).padStart(2,'0');
+    document.getElementById('t-min').textContent = String(Math.floor((totalSecs%3600)/60)).padStart(2,'0');
+    document.getElementById('t-sec').textContent = String(totalSecs%60).padStart(2,'0');
+  }, 1000);
+
+  // FAQ
+  function toggleFaq(el) { el.classList.toggle('open'); }
+
+  // FORM → WHATSAPP
+  function submitForm() {
+    const name = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const plan = document.getElementById('f-plan').value;
+    if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+    const msg = encodeURIComponent(`Hi Sagar Fitness!\n\nName: ${name}\nPhone: ${phone}\nInterested in: ${plan}\n\nPlease share the next steps!`);
+    window.open(`https://wa.me/918830412364?text=${msg}`, '_blank');
+  }
+</script>
+</body>
+</html>
